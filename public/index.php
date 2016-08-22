@@ -26,6 +26,11 @@ try {
         "action" => "index"
     ]);
 
+    $router->add("/user/signin", [
+        "controller" => "user",
+        "action" => "signin"
+    ]);
+
     $router->add("/user/logout", [
         "controller" => "user",
         "action" => "logout"

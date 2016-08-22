@@ -22,6 +22,4 @@ class AccountController extends \Phalcon\Mvc\Controller
 
 
     }
-
-
 }

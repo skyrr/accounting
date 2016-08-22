@@ -28,12 +28,18 @@ class UserController extends \Phalcon\Mvc\Controller
 
     public function logoutAction()
     {
-        $this->session->destroy();
-        return $this->response->redirect("/");
+        if ($this->session->has("user_id")) {
+            $this->session->destroy();
+        }
+
+        return $this->response->redirect();
     }
 
     public function signInAction()
     {
+        if ($this->session->has("user_id")) {
+            return $this->response->redirect();
+        }
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
             $email = $this->request->getPost('email');
@@ -42,6 +48,7 @@ class UserController extends \Phalcon\Mvc\Controller
                 $user = new User($data);
                 $success = $user->create();
                 if ($success) {
+                    $this->session->set("user_id", $user->getId());
                     return $this->response->redirect();
                 } else {
                     $messages = $user->getMessages();

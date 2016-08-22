@@ -12,6 +12,15 @@ class User extends \Phalcon\Mvc\Model
     protected $email;
     protected $password;
 
+    public function validation()
+    {
+        $this->validate(
+            new \Phalcon\Mvc\Model\Validator\Uniqueness(["field" => "email"])
+        );
+
+        return !$this->validationHasFailed();
+    }
+
     protected function initialize()
     {
         $this->hasMany(

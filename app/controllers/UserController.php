@@ -42,24 +42,19 @@ class UserController extends \Phalcon\Mvc\Controller
         }
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
-            $email = $this->request->getPost('email');
-            $user = User::findFirst("email = '$email'");
-            if (!$user) {
-                $user = new User($data);
-                $success = $user->create();
-                if ($success) {
-                    $this->session->set("user_id", $user->getId());
-                    return $this->response->redirect();
-                } else {
-                    $messages = $user->getMessages();
-                    if ($messages) {
-                        foreach ($messages as $message) {
-                            $this->flash->error($message);
-                        }
+            $user = new User($data);
+            $success = $user->create();
+            if ($success) {
+                $this->session->set("user_id", $user->getId());
+                return $this->response->redirect();
+            } else {
+                $messages = $user->getMessages();
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $this->flash->error($message);
                     }
                 }
             }
         }
-        $this->view->user = $user;
     }
 }

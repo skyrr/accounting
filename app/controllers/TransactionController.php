@@ -48,6 +48,7 @@ class TransactionController extends \Phalcon\Mvc\Controller
                 }
             }
         }
+        $this->view->categories = Category::find();
     }
 
     /**
@@ -74,6 +75,7 @@ class TransactionController extends \Phalcon\Mvc\Controller
             }
         }
 
+        $this->view->categories = Category::find();
         $this->view->transaction = $transaction;
     }
 

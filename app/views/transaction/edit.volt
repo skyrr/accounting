@@ -35,6 +35,13 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-4 col-md-offset-4 col-xs-12">
+                                <label for="comment">Category</label>
+                                <div class="input-group transparent">
+                                    <input type="hidden" value="" style="width:300px" id="e12" tabindex="-1" class="select2-offscreen">
+                                    {{ select("category_id", categories, 'using': ['id', 'name'], 'useEmpty': true, 'value': transaction.getCategoryId()) }}
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 col-md-offset-4 col-xs-12">
                                 <button type="submit" class="btn btn-success">Підтвердити</button>
                             </div>
                             <div class="form-group col-md-4 col-md-offset-4 col-xs-12">

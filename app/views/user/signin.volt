@@ -1,7 +1,7 @@
 <body class="error-body no-top">
 <div class="container">
     <div class="row login-container column-seperation">
-        <div class="col-md-5 "> <br>
+        <div class="col-md-4 col-md-offset-4 "> <br>
             <h1>Реєстрація</h1>
             <form id="login-form" class="login-form" method="post">
                 {% if error is defined %}

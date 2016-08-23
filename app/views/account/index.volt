@@ -58,6 +58,8 @@
                                 <td class="v-align-middle bold {% if transaction.isIncome() %}text-success {% endif %}"> {{ transaction.getAmount() }}</td>
                                 <td class="v-align-middle"> {{ transaction.getComment() }}</td>
                                 <td class="v-align-middle">{{ transaction.getCreatedAt() }}</td>
+                                {% set category = transaction.getCategory() %}
+                                <td class="v-align-middle">{% if category %}{{ category.getName() }} {% endif %}</td>
                             </tr>
                             {% endfor %}
                             </tbody>

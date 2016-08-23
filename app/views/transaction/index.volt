@@ -59,7 +59,7 @@
                                                 <tbody>
                                                 {% for transaction in transactions %}
                                                         <tr >
-                                                            <td class="v-align-middle bold {% if transaction.isIncome() %}text-success {% endif %}" >{{ transaction.getAmount() }}</td>
+                                                            <td class="v-align-middle bold {% if transaction.isIncome() %}text-success {% endif %}" >{{ transaction.getAmountDigit() }}</td>
                                                             <td class="v-align-middle"><span class="muted">{{ transaction.getComment() }}</span></td>
                                                             <td class="v-align-middle"><span class="muted"><a href="{{ url.get('transactions/' ~ transaction.getId() ~ '/edit') }}">{{ transaction.getCreatedAt() }} </a></span></td>
                                                             <td class="v-align-middle"> <a href="{{ url.get('transactions/' ~ transaction.getId() ~ '/remove') }}"><i class="fa fa-times"></i></a> </td>

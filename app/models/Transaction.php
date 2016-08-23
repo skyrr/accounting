@@ -9,15 +9,29 @@ class Transaction extends \Phalcon\Mvc\Model
 {
     protected $id;
     protected $user_id;
+    protected $category_id;
     protected $amount;
     protected $comment;
     protected $created_at;
+
+    protected function initialize()
+    {
+        $this->belongsTo('category_id', Category::class, 'id');
+    }
 
     public function beforeValidationOnCreate()
     {
         $this->created_at = date("Y-m-d H:i:s");
         $session = \Phalcon\Di::getDefault()->get('session');
         $this->user_id = $session->get("user_id");
+    }
+
+    public function validation()
+    {
+        $validation = new \Phalcon\Validation();
+        $validation->add('amount', new \Phalcon\Validation\Validator\Numericality());
+
+        return $this->validate($validation);
     }
 
     public function getId()
@@ -30,18 +44,23 @@ class Transaction extends \Phalcon\Mvc\Model
         return $this->user_id;
     }
 
-    public function getAmountDigit()
+    public function getCategoryId()
     {
-        return $this->amount;
+        return $this->category_id;
     }
 
-    public function getAmount()
+    public function getAmountDigit()
     {
         if ($this->isIncome()) {
             return "+" . $this->amount;
         } else {
             return $this->amount;
         }
+    }
+
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
     public function isIncome()

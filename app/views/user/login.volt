@@ -57,6 +57,7 @@
                 <div class="row">
                     <div class="col-md-10">
                         <button class="btn btn-primary btn-cons pull-right" type="submit">Login</button>
+                        <a href="{{ url.get("/user/signin") }}" class="btn btn-primary btn-cons pull-right" type="submit">Зареєструватись</a>
                     </div>
                 </div>
             </form>

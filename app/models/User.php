@@ -14,11 +14,11 @@ class User extends \Phalcon\Mvc\Model
 
     public function validation()
     {
-        $this->validate(
-            new \Phalcon\Mvc\Model\Validator\Uniqueness(["field" => "email"])
-        );
+        $validation = new \Phalcon\Validation();
+        $validation->add('email', new \Phalcon\Validation\Validator\Uniqueness());
+        $validation->add('email', new \Phalcon\Validation\Validator\Email());
 
-        return !$this->validationHasFailed();
+        return $this->validate($validation);
     }
 
     protected function initialize()

@@ -63,7 +63,15 @@ class TransactionController extends \Phalcon\Mvc\Controller
 
         if ($this->request->isPost()){
             $data = $this->request->getPost();
-            $transaction->update($data);
+            $success = $transaction->update($data);
+            if (!$success) {
+                $messages = $transaction->getMessages();
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+            }
         }
 
         $this->view->transaction = $transaction;

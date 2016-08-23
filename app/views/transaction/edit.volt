@@ -22,7 +22,7 @@
                                       <i class="fa fa-dollar"></i>
                                     </span>
 
-                                    <input type="number" name="amount" class="form-control" id="sum" value="{{ transaction.getAmountDigit() }}">
+                                    <input type="number" name="amount" class="form-control" id="sum" value="{{ transaction.getAmount() }}">
                                 </div>
                             </div>
                             <div class="form-group col-md-4 col-md-offset-4 col-xs-12">

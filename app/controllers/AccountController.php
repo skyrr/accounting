@@ -7,6 +7,18 @@
  */
 class AccountController extends \Phalcon\Mvc\Controller
 {
+    protected $user;
+    protected $account;
+    protected $user_id;
+
+    public function beforeExecuteRoute()
+    {
+        $user_id = $this->session->get("user_id");
+        $this->user_id = $user_id;
+        $this->user = User::findFirst($user_id);
+        $this->view->setVar('user', $this->user);
+    }
+
     public function indexAction()
     {
         $this->assets->addJs('assets/plugins/jquery-sparkline/jquery-sparkline.js');
@@ -68,11 +80,48 @@ class AccountController extends \Phalcon\Mvc\Controller
     public function createAction()
     {
 
+
+        if ($this->request->isPost()) {
+            $data = $this->request->getPost();
+            $account = new Account($data);
+            $success = $account->create();
+            if ($success) {
+                return $this->response->redirect();
+            } else {
+                $messages = $account->getMessages();
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+            }
+        }
+
+        //$this->view->user_id = $user_id;
     }
 
     public function editAction()
     {
+        $id = $this->dispatcher->getParam('id');
+        $account = Account::findFirst($id);
+        if (!$account) {
+            return $this->dispatcher->forward(["controller" => "exception", "action" => "notFound"]);
+        }
 
+        if ($this->request->isPost()){
+            $data = $this->request->getPost();
+            $success = $account->update($data);
+            if (!$success) {
+                $messages = $account->getMessages();
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+            }
+        }
+
+        $this->view->account = $account;
     }
 
     public function removeAction()

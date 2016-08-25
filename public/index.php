@@ -66,6 +66,11 @@ try {
         "action" => "edit"
     ]);
 
+    $router->add("/account/create", [
+        "controller" => "account",
+        "action" => "create"
+    ]);
+
     $router->notFound([
         "controller" => "exception",
         "action" => "notFound"

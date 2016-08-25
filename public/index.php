@@ -41,7 +41,6 @@ try {
         "action" => "index"
     ]);
 
-
     $router->add("/transactions/{id}/edit", [
         "controller" => "transaction",
         "action" => "edit"
@@ -55,6 +54,16 @@ try {
     $router->add("/transactions/{id}/remove", [
         "controller" => "transaction",
         "action" => "remove"
+    ]);
+
+    $router->add("/account/show", [
+        "controller" => "account",
+        "action" => "show"
+    ]);
+
+    $router->add("/account/{id}/edit", [
+        "controller" => "account",
+        "action" => "edit"
     ]);
 
     $router->notFound([
@@ -149,5 +158,5 @@ try {
     $response->send();
 
 } catch (\Exception $e) {
-    echo "Exception: ", $e->getMessage();
+    echo "Exception: ", $e->getMessage(), "FILE: ", $e->getFile(), " LINE: ", $e->getLine();
 }

@@ -5,12 +5,21 @@
  * Date: 18.08.16
  * Time: 11:30
  */
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+
 class TransactionController extends \Phalcon\Mvc\Controller
 {
     protected $user;
+    protected $account;
 
     public function beforeExecuteRoute()
     {
+        $this->assets->addJs('assets/plugins/jquery-sparkline/jquery-sparkline.js');
+        $this->assets->addJs('assets/js/charts.js');
+        $this->assets->addInlineJs('jQuery(document).ready(function($) {
+                               $(".clickable-row").click(function() {
+                               window.document.location = $(this).data("href");});});');
+
         if (!$this->session->has("user_id")) {
             return $this->dispatcher->forward(["controller" => "user", "action" => "login"]);
         }
@@ -24,8 +33,16 @@ class TransactionController extends \Phalcon\Mvc\Controller
      */
     public function indexAction()
     {
-        $transactions = $this->user->getTransaction(["order" => "created_at DESC"]);
+        $account = $this->user->getSelectedAccount();
+        $transactions = $account->getTransaction(["order" => "created_at DESC"]);
         $this->view->transactions = $transactions;
+        $this->view->account = $account;
+
+        $currentPage = (int) $_GET["page"];
+        $paginator = new PaginatorModel(["data" => $transactions, "limit" => 5, "page" => $currentPage]);
+
+        $page = $paginator->getPaginate();
+        $this->view->page = $page;
     }
 
     /**
@@ -77,6 +94,9 @@ class TransactionController extends \Phalcon\Mvc\Controller
 
         $this->view->categories = Category::find();
         $this->view->transaction = $transaction;
+
+        $accounts = $this->user->getAccount();
+        $this->view->accounts = $accounts;
     }
 
     /**

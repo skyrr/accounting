@@ -8,8 +8,8 @@
 class Transaction extends \Phalcon\Mvc\Model
 {
     protected $id;
-    protected $user_id;
     protected $category_id;
+    protected $account_id;
     protected $amount;
     protected $comment;
     protected $created_at;
@@ -17,6 +17,7 @@ class Transaction extends \Phalcon\Mvc\Model
     protected function initialize()
     {
         $this->belongsTo('category_id', Category::class, 'id');
+        $this->belongsTo('account_id', Account::class, 'id');
     }
 
     public function beforeValidationOnCreate()
@@ -47,6 +48,11 @@ class Transaction extends \Phalcon\Mvc\Model
     public function getCategoryId()
     {
         return $this->category_id;
+    }
+
+    public function getAccountId()
+    {
+        return $this->account_id;
     }
 
     public function getAmountDigit()

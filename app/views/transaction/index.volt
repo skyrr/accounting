@@ -37,33 +37,36 @@
                                             <div class="pull-right margin-top-20">
                                                 <div class="dataTables_paginate paging_bootstrap pagination">
                                                     <ul>
-                                                        <li class="prev disabled"><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                                        <li class="active"><a href="#">1</a></li><li><a href="#">2</a></li>
-                                                        <li class="next"><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+                                                        <li ><a href="?page=">Перша сторінка</a></li>
+                                                        <li class="prev disabled"><a href="?page={{ page.before }}"><i class="fa fa-chevron-left"></i></a></li>
+                                                        <li class="next"><a href="?page={{ page.next }}"><i class="fa fa-chevron-right"></i></a></li>
+                                                        <li><a href="?page={{ page.last }}">Остання сторінка</a></li>
                                                     </ul>
                                                 </div>
-                                                <div class="dataTables_info hidden-xs" id="example_info">Showing <b>1 to 10</b> of {{ transactions.count() }} операцій </div></div>
-                                            <div class="clearfix"></div>
-                                        </div>
-
+                                                <div class="dataTables_info hidden-xs" id="example_info">Показано з <b>1 по 5</b> операції на {{ page.total_pages }} сторінці </div></div>
                                         <div id="email-list">
                                             <table class="table table-striped table-fixed-layout table-hover" id="emails" >
                                                 <thead>
                                                 <tr>
                                                     <th width="30%">UAH</th>
                                                     <th width="30%">Примітка</th>
-                                                    <th width="30%"></th>
-                                                    <th width="10%"></th>
+                                                    <th width="30%">Дата</th>
+                                                    <th width="10%">Категорія</th>
+                                                    <th width="10%">Рахунок</th>
+                                                    <th width="10%">Видалити</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for transaction in transactions %}
-                                                        <tr >
-                                                            <td class="v-align-middle bold {% if transaction.isIncome() %}text-success {% endif %}" >{{ transaction.getAmountDigit() }}</td>
-                                                            <td class="v-align-middle"><span class="muted">{{ transaction.getComment() }}</span></td>
-                                                            <td class="v-align-middle"><span class="muted"><a href="{{ url.get('transactions/' ~ transaction.getId() ~ '/edit') }}">{{ transaction.getCreatedAt() }} </a></span></td>
-                                                            <td class="v-align-middle"> <a href="{{ url.get('transactions/' ~ transaction.getId() ~ '/remove') }}"><i class="fa fa-times"></i></a> </td>
-                                                        </tr>
+                                                {% for transaction in page.items %}
+                                                    <tr  onclick="window.document.location='{{ url.get('transactions/' ~ transaction.getId() ~ '/edit') }}';">
+                                                        <td class="v-align-middle bold {% if transaction.isIncome() %}text-success {% endif %}" >{{ transaction.getAmountDigit() }}</td>
+                                                        <td class="v-align-middle"><span class="muted">{{ transaction.getComment() }}</span></td>
+                                                        <td class="v-align-middle"><span class="muted">{{ transaction.getCreatedAt() }}</span></td>
+                                                        {% set category = transaction.getCategory() %}
+                                                        <td class="v-align-middle">{% if category %}{{ category.getName() }} {% endif %}</td>
+                                                        <td class="v-align-middle">{{ account.getName() }}</td>
+                                                        <td class="v-align-middle"> <a href="{{ url.get('transactions/' ~ transaction.getId() ~ '/remove') }}"><i class="fa fa-times"></i></a> </td>
+                                                    </tr>
                                                 {% endfor %}
                                                 </tbody>
                                             </table>

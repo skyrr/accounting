@@ -11,6 +11,7 @@ class User extends \Phalcon\Mvc\Model
     protected $name;
     protected $email;
     protected $password;
+    protected $selected_account_id;
 
     public function validation()
     {
@@ -25,9 +26,16 @@ class User extends \Phalcon\Mvc\Model
     {
         $this->hasMany(
             'id',
-            Transaction::class,
-            'user_id'
+            Account::class,
+            'user_id',
+            [
+                'alias' => 'Account'
+            ]
         );
+
+        $this->hasOne('selected_account_id', Account::class, 'id', [
+            'alias' => 'SelectedAccount'
+        ]);
     }
 
     public function getId()
@@ -50,27 +58,8 @@ class User extends \Phalcon\Mvc\Model
         return $this->password;
     }
 
-    public function getBalance()
+    public function getSelectedAccountId()
     {
-        return Transaction::sum([
-            "user_id = '$this->id'",
-            'column' => 'amount'
-        ]);
-    }
-
-    public function getBalanceMonth()
-    {
-        return Transaction::sum([
-            "user_id = '$this->id' AND YEAR(created_at) = YEAR(NOW()) AND MONTH(created_at) = MONTH(NOW())" ,
-            'column' => 'amount'
-        ]);
-    }
-
-    public function getBalanceToday()
-    {
-        return Transaction::sum([
-            "user_id = '$this->id' AND DATE(created_at) = CURDATE()",
-            'column' => 'amount'
-        ]);
+        return $this->selected_account_id;
     }
 }

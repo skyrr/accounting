@@ -26,6 +26,7 @@ class TransactionController extends \Phalcon\Mvc\Controller
 
         $user_id = $this->session->get("user_id");
         $this->user = User::findFirst($user_id);
+        //$this->account =
         $this->view->setVar('user', $this->user);
     }
     /**
@@ -35,6 +36,10 @@ class TransactionController extends \Phalcon\Mvc\Controller
     {
         $account = $this->user->getSelectedAccount();
         $transactions = $account->getTransaction(["order" => "created_at DESC"]);
+        if (!$transactions) {
+            return $this->dispatcher->forward(["controller" => "account", "action" => "index"]);
+        }
+
         $this->view->transactions = $transactions;
         $this->view->account = $account;
 
@@ -52,8 +57,9 @@ class TransactionController extends \Phalcon\Mvc\Controller
     {
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
-            $transaction = new Transaction($data);
-            $success = $transaction->create();
+            $account_id = $this->user->getSelectedAccountId();
+            $transaction = new Transaction(["account_id" => $account_id]);
+            $success = $transaction->create($data);
             if ($success) {
                 return $this->response->redirect();
             } else {

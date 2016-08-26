@@ -9,12 +9,10 @@ class AccountController extends \Phalcon\Mvc\Controller
 {
     protected $user;
     protected $account;
-    protected $user_id;
 
     public function beforeExecuteRoute()
     {
         $user_id = $this->session->get("user_id");
-        $this->user_id = $user_id;
         $this->user = User::findFirst($user_id);
         $this->view->setVar('user', $this->user);
     }
@@ -34,15 +32,15 @@ class AccountController extends \Phalcon\Mvc\Controller
         $user_id = $this->session->get("user_id");
         $user = User::findFirst($user_id);
         $this->view->setVar('user', $user);
+        $this->user = $user;
 
         $selected_account_id = $user->getSelectedAccountId();
         if (!$selected_account_id) {
             $accounts = $user->getAccount();
             if (!$accounts) {
-                return $this->response->redirect("/account/look");
+                return $this->response->redirect("/account/show");
             }
             $selectedAccount = $accounts->offsetGet(0);
-
         }
 
         if ($this->request->isPost()) {
@@ -80,13 +78,13 @@ class AccountController extends \Phalcon\Mvc\Controller
     public function createAction()
     {
 
-
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
-            $account = new Account($data);
-            $success = $account->create();
+            $user_id = $this->user->getId();
+            $account = new Account(['user_id' => $user_id]);
+            $success = $account->create($data);
             if ($success) {
-                return $this->response->redirect();
+                $this->user->update(['selected_account_id' => $account->getId()]);
             } else {
                 $messages = $account->getMessages();
                 if ($messages) {
@@ -95,7 +93,9 @@ class AccountController extends \Phalcon\Mvc\Controller
                     }
                 }
             }
+            return $this->response->redirect("/account/show");
         }
+
 
         //$this->view->user_id = $user_id;
     }

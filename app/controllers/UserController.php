@@ -16,11 +16,14 @@ class UserController extends \Phalcon\Mvc\Controller
             $email = $this->request->getPost("email");
             $password = $this->request->getPost("password");
 
-            $user = User::findFirst("email = '$email' AND password = '$password'");
+            $user = User::findFirst("email = '$email'");
             if ($user) {
-                $this->session->set("user_id", $user->getId());
-                return $this->response->redirect();
+                if ($this->security->checkHash($password, $user->password)) {
+                    $this->session->set("user_id", $user->getId());
+                    return $this->response->redirect();
+                }
             } else {
+                //$this->security->hash(rand());
                 $this->view->setVar("error", "Wrong password or email");
             }
         }
@@ -42,11 +45,14 @@ class UserController extends \Phalcon\Mvc\Controller
         }
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
-            $user = new User($data);
-            $success = $user->create();
+            $data['password'] = $this->security->hash($this->request->getPost('password'));
+
+            $user = new User();
+
+            $success = $user->create($data);
             if ($success) {
                 $this->session->set("user_id", $user->getId());
-                return $this->response->redirect();
+                return $this->response->redirect("/account/show");
             } else {
                 $messages = $user->getMessages();
                 if ($messages) {

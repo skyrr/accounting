@@ -10,10 +10,12 @@ class Account extends \Phalcon\Mvc\Model
     protected $id;
     protected $name;
     protected $user_id;
+    protected $currency_id;
 
     protected function initialize()
     {
         $this->belongsTo('user_id', User::class, 'id');
+        $this->belongsTo('currency_id', Currency::class, 'id');
 
         $this->hasMany(
             'id',

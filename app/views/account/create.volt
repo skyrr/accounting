@@ -25,7 +25,13 @@
                                     <input type="text" name="name" class="form-control" id="name">
                                 </div>
                             </div>
-
+                            <div class="form-group col-md-4 col-md-offset-4 col-xs-12">
+                                <label for="comment">Виберіть валюту</label>
+                                <div class="input-group transparent">
+                                    <input type="hidden" value="" style="width:300px" id="e12" tabindex="-1" class="select2-offscreen">
+                                    {{ select("currency_id", currency, 'using': ['id', 'name'], 'useEmpty': true) }}
+                                </div>
+                            </div>
                             <div class="form-group col-md-4 col-md-offset-4 col-xs-12">
                                 <button type="submit" class="btn btn-success">Підтвердити</button>
                             </div>

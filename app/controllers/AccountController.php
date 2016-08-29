@@ -81,7 +81,8 @@ class AccountController extends \Phalcon\Mvc\Controller
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
             $user_id = $this->user->getId();
-            $account = new Account(['user_id' => $user_id]);
+            $currency_id = $this->request->getPost("currency_id");
+            $account = new Account(['user_id' => $user_id, 'currency_id' => $currency_id]);
             $success = $account->create($data);
             if ($success) {
                 $this->user->update(['selected_account_id' => $account->getId()]);
@@ -95,6 +96,8 @@ class AccountController extends \Phalcon\Mvc\Controller
             }
             return $this->response->redirect("/account/show");
         }
+        $currency = Currency::find();
+        $this->view-> currency = $currency;
 
 
         //$this->view->user_id = $user_id;

@@ -94,7 +94,8 @@ try {
     // Настраиваем сервис для работы с БД
     $di->set('db', function () {
         return new DbAdapter(array(
-            "host"     => "localhost",
+            "host"     => "127.0.0.1",
+            "port"     => "4040",
             "username" => "root",
             "password" => "314",
             "dbname"   => "account",

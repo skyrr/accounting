@@ -47,19 +47,19 @@
                                     <h5 class="no-margin">Баланс</h5>
                                     <h4><span class="item-count animate-number semi-bold"
                                               data-value="{{ selectedAccount.getBalance() }}"
-                                              data-animation-duration="700">0</span> UAH</h4>
+                                              data-animation-duration="700">0</span> {{ selectedAccount.getCurrency().getName() }}</h4>
                                 </div>
                                 <div class="col-md-3 col-sm-3">
                                     <p class="semi-bold">За сьогодні</p>
                                     <h4><span class="item-count animate-number semi-bold"
                                               data-value="{{ selectedAccount.getBalanceToday() }}"
-                                              data-animation-duration="700">0</span> UAH</h4>
+                                              data-animation-duration="700">0</span> {{ selectedAccount.getCurrency().getName() }}</h4>
                                 </div>
                                 <div class="col-md-4 col-sm-3">
                                     <p class="semi-bold">Цього місяця</p>
                                     <h4><span class="item-count animate-number semi-bold"
                                               data-value="{{ selectedAccount.getBalanceMonth() }}"
-                                              data-animation-duration="700">0</span> UAH</h4>
+                                              data-animation-duration="700">0</span> {{ selectedAccount.getCurrency().getName() }}</h4>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

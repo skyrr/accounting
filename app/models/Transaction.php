@@ -84,5 +84,8 @@ class Transaction extends \Phalcon\Mvc\Model
         return $this->created_at;
     }
 
-
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
 }

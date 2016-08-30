@@ -107,6 +107,8 @@ class AccountController extends \Phalcon\Mvc\Controller
     {
         $id = $this->dispatcher->getParam('id');
         $account = Account::findFirst($id);
+        $currency = Currency::find();
+        $this->view->currency = $currency;
         if (!$account) {
             return $this->dispatcher->forward(["controller" => "exception", "action" => "notFound"]);
         }
@@ -139,6 +141,7 @@ class AccountController extends \Phalcon\Mvc\Controller
         $this->view->setVar('user', $user);
 
         $accounts = $user->getAccount();
+
         $this->view->accounts = $accounts;
     }
 }

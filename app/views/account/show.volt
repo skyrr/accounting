@@ -42,13 +42,14 @@
                                                     <thead>
                                                     <tr>
                                                         <th width="30%" class="text-center">Рахунок</th>
+                                                        <th width="30%" class="text-center">Валюта</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     {% for account in accounts %}
                                                         <tr  onclick="window.document.location='{{ url.get('account/' ~ account.getId() ~ '/edit') }}';">
-                                                            <td class="v-align-middle bold text-center">{{ account.getName() }}</td>
-
+                                                            <th class="v-align-middle text-center">{{ account.getName() }}</th>
+                                                            <th class="v-align-middle text-center"> {{ account.getCurrency().getName() }} </th>
                                                         </tr>
                                                     {% endfor %}
                                                     </tbody>

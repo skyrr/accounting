@@ -14,6 +14,8 @@ class Account extends \Phalcon\Mvc\Model
 
     protected function initialize()
     {
+        $this->keepSnapshots(true);
+
         $this->belongsTo('user_id', User::class, 'id');
         $this->belongsTo('currency_id', Currency::class, 'id');
 
@@ -24,8 +26,18 @@ class Account extends \Phalcon\Mvc\Model
         );
     }
 
-
-
+    protected function beforeUpdate()
+    {
+        if ($this->hasChanged('currency_id')) {
+            $transactions = $this->getTransaction();
+            foreach ($transactions as $transaction) {
+                $old_currency = $this->getCurrency();
+                $coefficient = $old_currency->getCoefficientByCurrencyId($this->currency_id);
+                $transaction->setAmount($transaction->getAmount() * $coefficient);
+                $transaction->update();
+            }
+        }
+    }
 
     public function getId()
     {
@@ -76,6 +88,11 @@ class Account extends \Phalcon\Mvc\Model
             "account_id = '$this->id' AND DATE(created_at) = CURDATE()",
             'column' => 'amount'
         ]);
+    }
+
+    public function getCurrencyId()
+    {
+        return $this->currency_id;
     }
 
 }

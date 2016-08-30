@@ -48,7 +48,7 @@
                                             <table class="table table-striped table-fixed-layout table-hover" id="emails" >
                                                 <thead>
                                                 <tr>
-                                                    <th width="30%">UAH</th>
+                                                    <th width="30%">{{ account.getCurrency().getName() }}</th>
                                                     <th width="30%">Примітка</th>
                                                     <th width="30%">Дата</th>
                                                     <th width="10%">Категорія</th>
